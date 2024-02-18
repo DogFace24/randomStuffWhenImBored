@@ -11,8 +11,6 @@ def print_board(board):
         print()
     print()
 
-print_board(board)
-
 def check_pos(pos):
     if board[pos[0]-1][pos[1]-1] == '-':
         return True
@@ -59,31 +57,48 @@ def make_pos():
             break
     return (int(i), int(j))
 
-flag = True
-ctr = 0
+def multiplayer():
+    flag=True
+    ctr=0
+    winner='-'
+    while flag:
+        var = ''
+        if ctr%2 == 1:
+            var = 'o'
+        else:
+            var = 'x'
+        print(var,"turn")
+        pos = make_pos()
+        if check_pos(pos):
+            board[pos[0]-1][pos[1]-1] = var
+            ctr += 1
+        else:
+            print("\nTry again!")
+        print_board(board)
+        state, winner = check_win(board)
+        if state == True:
+            flag = False
+            print(winner, "won :)")
+        if state == False and ctr == 9:
+            print("\nTie game :(")
+            break
 
-global winner
-winner = '-'
+while True:
+    num=int(input("Singleplayer (1) or Multiplayer (2)?: "))
 
-while flag:
-    var = ''
-    if ctr%2 == 1:
-        var = 'o'
-    else:
-        var = 'x'
-    print(var,"turn")
-    pos = make_pos()
-    if check_pos(pos):
-        board[pos[0]-1][pos[1]-1] = var
-        ctr += 1
-    else:
-        print("\nTry again!\n")
-    print_board(board)
-    state, winner = check_win(board)
-    if state == True:
-        flag = False
-        print(winner, "won!")
-    if state == False and ctr == 9:
+    if (num==2):
+        print_board(board)
+        multiplayer()
+
+    # else:
+    #     print_board(board)
+    #     sinleplayer() # add future singleplayer function with random function
+    
+    check=str(input("\nPlay again? y or n: ")).lower()
+    if (check=='n'):
+        print("\nBye!")
         break
 
-print("\nTie game :(")
+    board = [['-','-','-'], # define the board again if playing again
+            ['-','-','-'],
+            ['-','-','-']]
